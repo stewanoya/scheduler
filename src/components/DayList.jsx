@@ -13,6 +13,5 @@ export default function DayList(props) {
       />
     );
   });
-  console.log(parsedDayData);
   return <ul>{parsedDayData}</ul>;
 }
