@@ -3,6 +3,7 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 import axios from "axios";
+import { getAppointmentsForDay } from "../helpers/selectors";
 // const appointments = [
 //   {
 //     id: 1,
@@ -48,15 +49,30 @@ export default function Application(props) {
     appointments: {},
   });
   const setDay = (day) => setState({ ...state, day });
-  const setDays = (days) => setState((prev) => ({ ...prev, days }));
+
+  // const dailyAppointments = [];
 
   useEffect(() => {
-    axios.get("/api/days").then((response) => setDays([...response.data]));
+    Promise.all([axios.get("/api/days"), axios.get("/api/appointments")]).then(
+      (all) => {
+        console.log(all);
+        setState((prev) => ({
+          ...prev,
+          days: all[0].data,
+          appointments: all[1].data,
+        }));
+      }
+    );
   }, []);
 
-  const parsedAppointments = appointments.map((appt) => {
-    return <Appointment key={appt.id} {...appt} />;
-  });
+  console.log("HERE IS DAILY", state.dailyAppointments);
+
+  //Creates an appointment component for each appointment in the array, and passes down props.
+  const parsedAppointments = getAppointmentsForDay(state, state.day).map(
+    (appt) => {
+      return <Appointment key={appt.id} {...appt} />;
+    }
+  );
 
   return (
     <main className="layout">
