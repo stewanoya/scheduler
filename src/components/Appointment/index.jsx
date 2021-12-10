@@ -5,7 +5,7 @@ import Show from "./Show";
 import Empty from "./Empty";
 
 const Appointment = (props) => {
-  const { time, student, interview } = props;
+  const { time, interview } = props;
 
   return (
     <article className="appointment">
