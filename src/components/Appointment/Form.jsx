@@ -2,10 +2,24 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 const Form = (props) => {
-  const { interviewers, onSave } = props;
+  const { interviewers, onSave, interview } = props;
 
-  const [student, setStudent] = useState(props.student || "");
-  const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  //state will do a check to see if interview has been passed as a result of edit
+  const [student, setStudent] = useState(() => {
+    if (interview) {
+      return props.interview.student;
+    } else {
+      return props.student || "";
+    }
+  });
+
+  const [interviewer, setInterviewer] = useState(() => {
+    if (interview) {
+      return interview.interviewer.id;
+    } else {
+      return props.interviewer || null;
+    }
+  });
 
   const reset = () => {
     setStudent("");
