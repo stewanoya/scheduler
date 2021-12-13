@@ -2,24 +2,16 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 const Form = (props) => {
-  const { interviewers, onSave, interview } = props;
+  // const { interviewers, onSave, interview } = props;
 
   //state will do a check to see if interview has been passed as a result of edit
-  const [student, setStudent] = useState(() => {
-    if (interview) {
-      return props.interview.student;
-    } else {
-      return props.student || "";
-    }
-  });
+  const [student, setStudent] = useState(
+    props.interview ? props.interview.student : ""
+  );
 
-  const [interviewer, setInterviewer] = useState(() => {
-    if (interview) {
-      return interview.interviewer.id;
-    } else {
-      return props.interviewer || null;
-    }
-  });
+  const [interviewer, setInterviewer] = useState(
+    props.interview ? props.interview.interviewer.id : null
+  );
 
   const reset = () => {
     setStudent("");
@@ -45,7 +37,7 @@ const Form = (props) => {
           />
         </form>
         <InterviewerList
-          interviewers={interviewers}
+          interviewers={props.interviewers}
           value={interviewer}
           onChange={setInterviewer}
         />
@@ -55,7 +47,7 @@ const Form = (props) => {
           <Button danger onClick={onCancel}>
             Cancel
           </Button>
-          <Button confirm onClick={() => onSave(student, interviewer)}>
+          <Button confirm onClick={() => props.onSave(student, interviewer)}>
             Save
           </Button>
         </section>
