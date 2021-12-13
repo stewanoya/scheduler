@@ -20,11 +20,13 @@ const Appointment = (props) => {
   );
 
   const save = (name, interviewer) => {
+    //transition to saving animation
     transition(SAVING);
     const interview = {
       student: name,
       interviewer,
     };
+    // the put request is returned as a promise, and once promise is resolved, then it will transition to show.
     bookInterview(props.id, interview).then(() => transition(SHOW));
   };
 
