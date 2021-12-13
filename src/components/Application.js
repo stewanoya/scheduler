@@ -18,8 +18,7 @@ export default function Application(props) {
   });
   const setDay = (day) => setState({ ...state, day });
 
-  // const dailyAppointments = [];
-
+  //Grouping all get requests into one promise and passing data to default state.
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
@@ -39,13 +38,36 @@ export default function Application(props) {
 
   //Creates an appointment component for each appointment in the array, and passes down props.
   const appointments = getAppointmentsForDay(state, state.day);
+
   const interviewers = getInterviewersForDay(state, state.day);
-  console.log(`THESE ARE THE INTERVIEWERS FOR ${state.day} --- `, interviewers);
+
+  const bookInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    // setState((prev) => ({
+    //   ...prev,
+    //   appointments,
+    // }));
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      setState((prev) => ({
+        ...prev,
+        appointments,
+      }));
+    });
+  };
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
 
     return (
       <Appointment
+        bookInterview={bookInterview}
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
@@ -54,6 +76,7 @@ export default function Application(props) {
       />
     );
   });
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -73,7 +96,9 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
+        {/* the map of appointments for the day */}
         {schedule}
+        {/* final appointment so no one books for 5pm or later */}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
