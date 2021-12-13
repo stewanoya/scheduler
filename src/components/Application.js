@@ -51,10 +51,6 @@ export default function Application(props) {
       [id]: appointment,
     };
 
-    // setState((prev) => ({
-    //   ...prev,
-    //   appointments,
-    // }));
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       setState((prev) => ({
         ...prev,
@@ -62,6 +58,20 @@ export default function Application(props) {
       }));
     });
   };
+
+  const deleteInterview = (id) => {
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      const appointments = { ...state.appointments };
+
+      appointments[id].interview = null;
+
+      setState((prev) => ({
+        ...prev,
+        appointments,
+      }));
+    });
+  };
+
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
 
@@ -73,6 +83,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        deleteInterview={deleteInterview}
       />
     );
   });
