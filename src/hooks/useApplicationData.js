@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { updateSpotsHelper } from "../helpers/spotsUpdate";
 const useApplicationData = () => {
   const [state, setState] = useState({
     day: "Monday",
@@ -7,6 +8,7 @@ const useApplicationData = () => {
     appointments: {},
     interviewers: {},
   });
+
   const setDay = (day) => setState({ ...state, day });
 
   //Grouping all get requests into one promise and passing data to default state.
@@ -36,13 +38,22 @@ const useApplicationData = () => {
       ...state.appointments,
       [id]: appointment,
     };
-
-    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
-      setState((prev) => ({
-        ...prev,
-        appointments,
-      }));
-    });
+    const spots = updateSpotsHelper(state, appointments);
+    const days = state.days.map((day) =>
+      day.name === state.day ? { ...day, spots } : day
+    );
+    // console.log(state.days);
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then(() => {
+        //make implicit
+        return setState((prev) => ({
+          ...prev,
+          appointments,
+          days,
+        }));
+      })
+      .catch((err) => console.error(err));
   };
 
   const deleteInterview = (id) => {
@@ -50,10 +61,15 @@ const useApplicationData = () => {
       const appointments = { ...state.appointments };
 
       appointments[id].interview = null;
+      const spots = updateSpotsHelper(state, appointments);
+      const days = state.days.map((day) =>
+        day.name === state.day ? { ...day, spots } : day
+      );
 
       setState((prev) => ({
         ...prev,
         appointments,
+        days,
       }));
     });
   };
