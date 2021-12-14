@@ -1,13 +1,15 @@
-const getAppointmentsForDay = (state, day) => {
-  //move getDay here
-  const filteredDays = state.days.filter((state) => state.name === day);
+const getDay = (state, string) => {
+  return state.days.find((day) => day.name === string);
+};
 
-  if (filteredDays.length === 0) {
+const getAppointmentsForDay = (state, day) => {
+  const filteredDays = getDay(state, day);
+
+  if (!filteredDays) {
     return [];
   }
 
-  //fix this after [0]
-  const filteredApptsInDay = filteredDays[0].appointments;
+  const filteredApptsInDay = filteredDays.appointments;
 
   const filteredAppointments = [];
 
@@ -19,13 +21,13 @@ const getAppointmentsForDay = (state, day) => {
 };
 
 const getInterviewersForDay = (state, day) => {
-  const filteredDays = state.days.filter((state) => state.name === day);
+  const filteredDays = getDay(state, day);
 
-  if (filteredDays.length === 0) {
+  if (!filteredDays) {
     return [];
   }
 
-  const filteredInterviewersInDay = filteredDays[0].interviewers;
+  const filteredInterviewersInDay = filteredDays.interviewers;
 
   if (!filteredInterviewersInDay) {
     return [];
@@ -52,4 +54,4 @@ const getInterview = (state, interview) => {
   return interviewer;
 };
 
-export { getAppointmentsForDay, getInterview, getInterviewersForDay };
+export { getAppointmentsForDay, getInterview, getInterviewersForDay, getDay };

@@ -1,6 +1,4 @@
-const getDay = (state, string) => {
-  return state.days.find((day) => day.name === string);
-};
+import { getDay } from "./selectors";
 
 const updateSpotsHelper = (state, appointments) => {
   const foundDay = getDay(state, state.day);
@@ -14,4 +12,4 @@ const updateSpotsHelper = (state, appointments) => {
   return spotsRemaining;
 };
 
-export { getDay, updateSpotsHelper };
+export { updateSpotsHelper };
