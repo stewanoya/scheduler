@@ -1,10 +1,12 @@
 const getAppointmentsForDay = (state, day) => {
+  //move getDay here
   const filteredDays = state.days.filter((state) => state.name === day);
 
   if (filteredDays.length === 0) {
     return [];
   }
 
+  //fix this after [0]
   const filteredApptsInDay = filteredDays[0].appointments;
 
   const filteredAppointments = [];
