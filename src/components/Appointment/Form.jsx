@@ -10,7 +10,7 @@ const Form = (props) => {
   );
 
   const [interviewer, setInterviewer] = useState(
-    props.interview ? props.interview.interviewer.id : null
+    props.interview ? props.interview.interviewer.id : ""
   );
 
   const reset = () => {
