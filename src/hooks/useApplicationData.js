@@ -43,17 +43,14 @@ const useApplicationData = () => {
       day.name === state.day ? { ...day, spots } : day
     );
     // console.log(state.days);
-    return axios
-      .put(`/api/appointments/${id}`, { interview })
-      .then(() => {
-        //make implicit
-        return setState((prev) => ({
-          ...prev,
-          appointments,
-          days,
-        }));
-      })
-      .catch((err) => console.error(err));
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      //make implicit
+      return setState((prev) => ({
+        ...prev,
+        appointments,
+        days,
+      }));
+    });
   };
 
   const deleteInterview = (id) => {
