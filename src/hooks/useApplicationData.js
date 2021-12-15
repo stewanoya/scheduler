@@ -30,19 +30,22 @@ const useApplicationData = () => {
   }, []);
 
   const bookInterview = (id, interview) => {
+    // grabbing the single appointment by using the id parameter(spelling?)
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
     };
+
+    // copying previous state to new variable and reassigning new appointment to id
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
     const spots = updateSpotsHelper(state, appointments);
+
     const days = state.days.map((day) =>
       day.name === state.day ? { ...day, spots } : day
     );
-    // console.log(state.days);
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       //make implicit
       return setState((prev) => ({
