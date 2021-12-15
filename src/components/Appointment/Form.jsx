@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Button from "components/Button";
 import InterviewerList from "components/InterviewerList";
 const Form = (props) => {
-  // const { interviewers, onSave, interview } = props;
   const [error, setError] = useState("");
   //state will do a check to see if interview has been passed as a result of edit
   const [student, setStudent] = useState(props.student || "");
@@ -20,8 +19,8 @@ const Form = (props) => {
   };
 
   function validate() {
-    if (student === "") {
-      setError("Student name cannot be blank");
+    if (student === "" || interviewer === null) {
+      setError("Student name or interviewer choice cannot be blank");
       return;
     }
     setError("");
