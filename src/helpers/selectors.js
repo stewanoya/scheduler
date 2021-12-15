@@ -1,3 +1,4 @@
+// function to get the current day, used in all other mapping functions
 const getDay = (state, string) => {
   return state.days.find((day) => day.name === string);
 };
